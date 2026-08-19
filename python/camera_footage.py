@@ -13,15 +13,15 @@ def main():
 
     try:
         while True:
-            return_value_left, left_frame = left_capture.read()
-            return_value_right, right_frame = right_capture.read()
+            return_value_left, left_frame_1 = left_capture.read()
+            return_value_right, right_frame_1 = right_capture.read()
             if not return_value_left:
                 raise NoCameraFootage()
             if not return_value_right:
                 raise NoCameraFootage()
 
-            cv2.imshow("Live camera left", left_frame)
-            cv2.imshow("Live camera right", right_frame)
+            cv2.imshow("Live camera left", left_frame_1)
+            cv2.imshow("Live camera right", right_frame_1)
 
             if cv2.waitKey(1) & 0xFF == KEY_ESC:
                 break
