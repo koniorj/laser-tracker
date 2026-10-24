@@ -55,46 +55,48 @@ def main():
     # CAP_DSHOW - DirectShow, it overwrites the standard way of Windows opening
     # camera feed with MSMF, which is incompatible with Iriun
     left_capture = cv2.VideoCapture(CAMERA_1_ID, cv2.CAP_DSHOW)
-    right_capture = cv2.VideoCapture(CAMERA_2_ID, cv2.CAP_DSHOW)
+    # right_capture = cv2.VideoCapture(CAMERA_2_ID, cv2.CAP_DSHOW)
 
     left_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    left_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    right_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    right_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    # left_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    # right_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    # right_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
     try:
         while True:
             _, left_frame_1 = left_capture.read()
             _, left_frame_2 = left_capture.read()
-            _, right_frame_1 = right_capture.read()
-            _, right_frame_2 = right_capture.read()
+            # _, right_frame_1 = right_capture.read()
+            # _, right_frame_2 = right_capture.read()
 
             left1 = cv2.cvtColor(left_frame_1, cv2.COLOR_BGR2GRAY)
             left2 = cv2.cvtColor(left_frame_2, cv2.COLOR_BGR2GRAY)
-            right1 = cv2.cvtColor(right_frame_1, cv2.COLOR_BGR2GRAY)
-            right2 = cv2.cvtColor(right_frame_2, cv2.COLOR_BGR2GRAY)
+            # right1 = cv2.cvtColor(right_frame_1, cv2.COLOR_BGR2GRAY)
+            # right2 = cv2.cvtColor(right_frame_2, cv2.COLOR_BGR2GRAY)
 
             kernel = np.ones((16, 16), np.uint8)
 
             mask_left = get_mask(left2, left1, kernel)
-            mask_right = get_mask(right2, right1, kernel)
+            # mask_right = get_mask(right2, right1, kernel)
 
             left_x, left_y = get_center_of_motion(mask_left, left_frame_2)
-            right_x, right_y = get_center_of_motion(mask_right, right_frame_2)
+            # right_x, right_y = get_center_of_motion(mask_right, right_frame_2)
 
     
             cv2.imshow("Left detection", left_frame_2)
-            cv2.imshow("Right detection", right_frame_2)
+            # cv2.imshow("Right detection", right_frame_2)
 
+            right_x = None
             # should be changed to yield or other method
             if left_x is not None or right_x is not None:
-                print(f"L: ({left_x}, {left_y})") #  | R: ({right_x}, {right_y})
+                print(f"L: ({left_x}, {left_y})")
+                # print(f"R: ({right_x}, {right_y})") 
             
             if cv2.waitKey(1) & 0xFF == KEY_ESC:
                 break
     finally: 
         left_capture.release()
-        right_capture.release()
+        # right_capture.release()
         cv2.destroyAllWindows()
         print("All resources freed.")
 

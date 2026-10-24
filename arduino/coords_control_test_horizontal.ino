@@ -32,21 +32,18 @@ void loop() {
 
     float panRad = atan2(xT, yT); 
     
-    // Zamiast xT^2 (co w C++ jest operacją bitową XOR), używamy mnożenia (xT * xT)
+    // instead of xT^2 use multiplication (xT * xT)
     float distanceXY = sqrt((xT * xT) + (yT * yT));
     float tiltRad = atan2(zT, distanceXY);
 
-    // 3. KONWERSJA NA STOPNIE I MAPOWANIE
-    // Zamiana radianów na stopnie: kąt * (180 / PI)
+    // conversion to coords and mapping
+    // radians to degrees: deg * (180 / PI)
     posX = panRad * (180.0 / PI);
     posY = tiltRad * (180.0 / PI);
 
-    // Przesunięcie układu współrzędnych. Wynik z atan2 może być ujemny (np. -45 do 45).
-    // Dodajemy 90, aby środek ruchu wypadał na 90 stopniach serwa.
     posX += 90;
     posY += 90;
 
-    // 4. ZABEZPIECZENIE I RUCH
     posX = constrain(posX, 10, 170);
     posY = constrain(posY, 10, 170);
 
@@ -55,10 +52,10 @@ void loop() {
 
     digitalWrite(LASER, HIGH); 
     
-    // Czekamy chwilę, aby laser poświecił w cel (np. pół sekundy)
+    // wait for the laser to point
     delay(5000); 
 
-    // Wyłączamy laser, aby nie świecił bez przerwy i oszczędzał baterie
+    // turning the laser off
     digitalWrite(LASER, LOW);
   }
 }
