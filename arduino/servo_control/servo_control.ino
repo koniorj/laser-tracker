@@ -5,20 +5,15 @@
 Servo horizontal;
 Servo vertical;
 
-float posX = 90;
-float posY = 90;
-
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
+  Serial.setTimeout(10);
   horizontal.attach(9);
   vertical.attach(10);
+  horizontal.write(126);
+  vertical.write(124);
+  delay(1000);
   pinMode(LASER, OUTPUT);
-
-  // initial position
-  horizontal.write(posX);
-  vertical.write(posY);
-
-  // turn the laser on continuously to draw the shape
   digitalWrite(LASER, HIGH);
 }
 
@@ -33,12 +28,12 @@ void loop() {
         int V_index = coord_input.indexOf("V");
 
         // if index found, then proceed
-        if (H_index != -1 && V_index != -1) {
+        if (H_index != -1 && V_index != -1 && H_index < V_index) {
             String H_coords = coord_input.substring(H_index+1, V_index);
             String V_coords = coord_input.substring(V_index+1);
 
-            int H_constrained_coords = constrain(H_coords.toInt(), 0, 180);
-            int V_constrained_coords = constrain(V_coords.toInt(), 0, 180);
+            int H_constrained_coords = constrain(H_coords.toInt(), 90, 180);
+            int V_constrained_coords = constrain(V_coords.toInt(), 90, 180);
 
             horizontal.write(H_constrained_coords);
             vertical.write(V_constrained_coords);
